@@ -1,40 +1,25 @@
 timeout(60) {
     node('maven-slave') {
         stage('Checkout') {
-            git branch: "$BRANCH", credentialsId: 'jenkins', url: ''
+            git branch: "$BRANCH", credentialsId: 'jenkins', url: 'git@github.com:saint88/jenkins.git'
         }
-    }
-}
+        stage('Run tests') {
+            def jobs = [:]
 
+            def runnerJobs = "$TEST_TYPE".split(",")
 
-
-
-
-timeout(60) {
-    node('maven-slave') {
-        timestamps {
-            wrap([$class: 'BuildUser']){
-                summary = """<b>Owner:</b> ${env.BUILD_USER}"""
-                currentBuild.description = summary
-            }
-            stage('Checkout') {
-                checkout scm
-            }
-            stage('Run all tests') {
-                def jobs = [:]
-
-                jobs['chrome'] = {
+            jobs['ui_tests'] = {
                     node('maven-slave') {
                     stage('Ui tests on chrome') {
-                        if('chrome' in BROWSER) {
-                            catchError(buildResult: 'SUCCESS', stageResult: 'FAILURE') {
-                            build(job: 'ui-tests',
-                            parameters: [
-                                string(name: 'BRANCH', value: BRANCH),
-                                string(name: 'BASE_URL', value: BASE_URL),
-                                string(name: 'BROWSER', value: 'chrome'),
-                                string(name: 'BROWSER_VERSION', value: BROWSER_VERSION)
-                            ])
+                        if('ui' in runnerJobs) {
+                            catchError(buildResult: 'SUCCESS', stageResult: 'UNSTABLE') {
+                                build(job: 'ui-tests',
+                                parameters: [
+                                    string(name: 'BRANCH', value: BRANCH),
+                                    string(name: 'BASE_URL', value: BASE_URL),
+                                    string(name: 'BROWSER', value: BROWSER),
+                                    string(name: 'BROWSER_VERSION', value: BROWSER_VERSION)
+                                ])
                             }
                         } else {
                             echo 'Skipping stage...'
@@ -42,10 +27,9 @@ timeout(60) {
                         }
                     }
                 }
+            }
 
-                parallel jobs
-            }
-            }
+            parallel jobs
         }
     }
 }
