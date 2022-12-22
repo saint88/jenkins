@@ -1,0 +1,11 @@
+---
+
+- scm:
+    name: git-ui-tests
+    scm:
+    - git:
+        url: git@github.com:saint88/selenium_otus_students.git
+        credentials-id: jenkins
+        branches:
+        - FETCH_HEAD
+        refspec: ${BRANCH}
