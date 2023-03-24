@@ -16,12 +16,14 @@ services:
   jenkins:
     restart: always
     build:
-      context: ./config
-      dockerfile: Dockerfile
+       context: ./config
+       dockerfile: Dockerfile
     hostname: jenkins
+    privileged: true
     user: root
     ports:
       - "127.0.0.1:8090:8080"
+      - 50000:50000
     environment:
       - JAVA_OPTS="-Dhudson.model.DownloadService.noSignatureCheck=true"
       - DOCKER_HOST=unix:///var/run/docker.sock

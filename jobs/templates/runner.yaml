@@ -30,14 +30,14 @@
           name: GRID_URL
           default: http://127.0.0.1:4445
       - extended-choice:
-            name: TEST_TYPE
-            description: Tests type
-            quote-value: false
-            visible-items: 5
-            type: multi-select
-            default-value: api,ui,mobile
-            value: api,ui,mobile
+          name: JOB_RUNNER
+          description: Tests type
+          quote-value: false
+          visible-items: 5
+          type: multi-select
+          default-value: api,ui,mobile
+          value: api,ui,mobile
     pipeline-scm:
       scm:
-      - git-ui-tests
-      script-path: jenkins/ui-tests.groovy
+      - git-runner
+      script-path: jobs/scripts/run-all-ui-tests.groovy

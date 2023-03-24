@@ -9,3 +9,13 @@
         branches:
         - FETCH_HEAD
         refspec: ${BRANCH}
+
+- scm:
+    name: git-runner
+    scm:
+    - git:
+        url: git@github.com:saint88/jenkins.git
+        credentials-id: jenkins
+        branches:
+        - FETCH_HEAD
+        refspec: ${BRANCH}
