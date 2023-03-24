@@ -17,3 +17,16 @@
       - last-failure
       - last-duration
       - build-button
+
+- view:
+    name: DevOps
+    view-type: list
+    description: DevOps
+    filter-executors: true
+    filter-queue: true
+    job-name:
+       - 'jobs_uploader'
+    columns:
+       - status
+       - build-button
+       - job
